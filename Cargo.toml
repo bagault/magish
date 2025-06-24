@@ -1,0 +1,12 @@
+[package]
+name = "magish"
+version = "1.0.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/bagault/magish"
+
+[dependencies]
+which = "5.0"
+
+[build-dependencies]
+winres = "0.1"
