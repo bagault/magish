@@ -14,7 +14,7 @@ use std::thread;
 use std::time::Duration;
 
 fn main() {
-    println!("
+    println!(r#"
  ██████   ██████                     ███   █████████  █████   █████
 ░░██████ ██████                     ░░░   ███░░░░░███░░███   ░░███ 
  ░███░█████░███   ██████    ███████ ████ ░███    ░░░  ░███    ░███ 
@@ -26,8 +26,10 @@ fn main() {
                            ███ ░███                                
                           ░░██████                                 
                            ░░░░░░ 
-v1.0.0 \n
-A cross-platform Rust utility to locate and run Bash scripts.\n");                           
+
+v{}
+A cross-platform Rust utility to locate and run Bash scripts.
+"#, env!("CARGO_PKG_VERSION"));
     // 1) OS Detection and Preparation
     if cfg!(target_os = "windows") {
         println!("Windows detected.");
