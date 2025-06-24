@@ -2,34 +2,35 @@
 REM Self-updating Windows installer for MagiSH
 setlocal
 set REPO=bagault/magish
-set EXE_NAME=magish.exe
 set ZIP_NAME=magish-windows-x86_64.zip
 set DEST_PATH="%ProgramFiles%\MagiSH"
 set SHORTCUT="%USERPROFILE%\Desktop\MagiSH.lnk"
 
-REM Download the latest release zip from GitHub
-for /f "tokens=1 delims=" %%A in ('powershell -Command "(Invoke-WebRequest -UseBasicParsing https://api.github.com/repos/%REPO%/releases/latest | ConvertFrom-Json).assets | Where-Object { $_.name -eq '%ZIP_NAME%' } | Select-Object -ExpandProperty browser_download_url"') do set DOWNLOAD_URL=%%A
-
-if "%DOWNLOAD_URL%"=="" (
-    echo Could not find the latest release download URL.
-    pause
-    exit /b 1
+REM Relaunch as administrator if not already
+openfiles >nul 2>&1
+if %errorlevel% neq 0 (
+    echo Requesting administrator privileges...
+    powershell -Command "Start-Process '%~f0' -Verb runAs"
+    exit /b
 )
+
+REM Download the latest production release zip from GitHub
+set DOWNLOAD_URL=https://github.com/bagault/magish/releases/download/production/%ZIP_NAME%
 
 REM Download the zip file
 powershell -Command "Invoke-WebRequest -Uri '%DOWNLOAD_URL%' -OutFile '%TEMP%\%ZIP_NAME%'"
 
-REM Extract magish.exe from the zip
+REM Extract all files from the zip
 powershell -Command "Expand-Archive -Path '%TEMP%\%ZIP_NAME%' -DestinationPath '%TEMP%\magish_extract' -Force"
 
 REM Create destination folder
 if not exist %DEST_PATH% mkdir %DEST_PATH%
 
-REM Copy executable
-copy /Y %TEMP%\magish_extract\%EXE_NAME% %DEST_PATH%\
+REM Copy all files to Program Files\MagiSH
+copy /Y %TEMP%\magish_extract\* %DEST_PATH%\
 
 REM Create desktop shortcut using PowerShell
-powershell -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT%');$s.TargetPath='%DEST_PATH%\%EXE_NAME%';$s.IconLocation='%DEST_PATH%\favicon.ico';$s.Save()"
+powershell -Command "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT%');$s.TargetPath='%DEST_PATH%\magish.exe';$s.IconLocation='%DEST_PATH%\favicon.ico';$s.Save()"
 
 echo Installation complete. Shortcut created on Desktop.
 pause
