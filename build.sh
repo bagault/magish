@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Get version from Cargo.toml
+toml_version=$(grep '^version' Cargo.toml | head -n1 | cut -d'"' -f2)
+
 # Build Linux binary
 cargo build --release
 
@@ -17,10 +20,10 @@ cp assets/favicon-256.png build/deb/usr/share/icons/hicolor/256x256/apps/magish.
 cp magish.desktop build/deb/usr/share/applications/
 cp build/deb/DEBIAN/control build/deb/DEBIAN/control
 X-Age-Rating: 0+
-dpkg-deb --build build/deb build/release/magish_1.0.0_amd64.deb
+dpkg-deb --build build/deb build/release/magish_${toml_version}_amd64.deb
 
 # Build .rpm package (using fpm)
-fpm -s dir -t rpm -n magish -v 1.0.0 --license MIT --url https://github.com/bagault/magish --description "Cross-platform Bash script runner with user-friendly interface. The newest release is always available at https://github.com/bagault/magish/releases" --maintainer "Daniel <your@email.com>" --depends bash --category utils --architecture amd64 target/release/magish=/usr/bin/magish magish.desktop=/usr/share/applications/magish.desktop assets/favicon-256.png=/usr/share/icons/hicolor/256x256/apps/magish.png -p build/release/magish-1.0.0-1.x86_64.rpm
+fpm -s dir -t rpm -n magish -v $toml_version --license MIT --url https://github.com/bagault/magish --description "Cross-platform Bash script runner with user-friendly interface. The newest release is always available at https://github.com/bagault/magish/releases" --maintainer "Daniel <your@email.com>" --depends bash --category utils --architecture amd64 target/release/magish=/usr/bin/magish magish.desktop=/usr/share/applications/magish.desktop assets/favicon-256.png=/usr/share/icons/hicolor/256x256/apps/magish.png -p build/release/magish-${toml_version}-1.x86_64.rpm
 
 # Build Windows zip
 zip -j build/release/magish-windows-x86_64.zip target/x86_64-pc-windows-gnu/release/magish.exe assets/favicon.ico windows_installer.bat

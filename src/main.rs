@@ -47,7 +47,12 @@ A cross-platform Rust utility to locate and run Bash scripts.\n");
         return;
     }
 
-    let mut current_dir = std::env::current_dir().unwrap();
+    let mut current_dir = if cfg!(target_os = "windows") {
+        // Default to Desktop on Windows
+        dirs::desktop_dir().unwrap_or_else(|| std::env::current_dir().unwrap())
+    } else {
+        std::env::current_dir().unwrap()
+    };
     loop {
         println!("\nCurrent folder: {}", current_dir.display());
         let bash_files = list_bash_files(&current_dir);

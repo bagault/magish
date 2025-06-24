@@ -7,6 +7,7 @@ repository = "https://github.com/bagault/magish"
 
 [dependencies]
 which = "5.0"
+dirs = "5.0"
 
 [build-dependencies]
 winres = "0.1"
