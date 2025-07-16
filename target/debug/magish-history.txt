@@ -1,0 +1,5 @@
+#V2
+ls
+cd Desktop
+1
+script.sh
