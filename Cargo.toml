@@ -1,10 +1,6 @@
 [package]
 name = "magish"
-<<<<<<< HEAD
-version = "0.2.0"
-=======
 version = "0.3.0"
->>>>>>> 9692385 (Release v0.3.0)
 edition = "2021"
 license = "MIT"
 repository = "https://github.com/bagault/magish"
@@ -12,13 +8,10 @@ repository = "https://github.com/bagault/magish"
 [dependencies]
 which = "5.0"
 dirs = "5.0"
-<<<<<<< HEAD
-=======
 rustyline = "12.0"  # For command history and line editing
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"  # For config file
 glob = "0.3"       # For path completion
->>>>>>> 9692385 (Release v0.3.0)
 
 [build-dependencies]
 winres = "0.1"
