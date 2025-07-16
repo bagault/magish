@@ -1,8 +1,0 @@
-Package: magish
-Version: 0.3.0
-Section: utils
-Priority: optional
-Architecture: amd64
-Depends: bash
-Maintainer: Daniel <your@email.com>
-Description: Cross-platform Bash script runner with user-friendly interface.
