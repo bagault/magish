@@ -1,1 +1,0 @@
-/home/daniel/Documents/magish-main/target/release/magish: /home/daniel/Documents/magish-main/build.rs /home/daniel/Documents/magish-main/src/config.rs /home/daniel/Documents/magish-main/src/history.rs /home/daniel/Documents/magish-main/src/main.rs
