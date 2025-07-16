@@ -96,7 +96,11 @@ A cross-platform Rust utility to locate and run Bash scripts.
             "ls" => list_directory(&current_dir),
             input if input.starts_with("ls ") => {
                 let path = input[3..].trim();
-                let target_path = resolve_path(&current_dir, path);
+                let target_path = match path {
+                    "." => current_dir.to_path_buf(),
+                    ".." => current_dir.parent().unwrap_or(&current_dir).to_path_buf(),
+                    _ => resolve_path(&current_dir, path)
+                };
                 if target_path.exists() && target_path.is_dir() {
                     list_directory(&target_path);
                 } else {
@@ -112,7 +116,11 @@ A cross-platform Rust utility to locate and run Bash scripts.
             }
             input if input.starts_with("cd ") => {
                 let path = input[3..].trim();
-                let target_path = resolve_path(&current_dir, path);
+                let target_path = match path {
+                    "." => current_dir.to_path_buf(),
+                    ".." => current_dir.parent().unwrap_or(&current_dir).to_path_buf(),
+                    _ => resolve_path(&current_dir, path)
+                };
                 if target_path.exists() && target_path.is_dir() {
                     current_dir = target_path;
                     config.last_directory = current_dir.clone();
@@ -120,6 +128,10 @@ A cross-platform Rust utility to locate and run Bash scripts.
                 } else {
                     println!("Invalid directory: {}", path);
                 }
+            }
+            "quit" | "exit" => {
+                history.save_history().unwrap_or_else(|e| eprintln!("Failed to save history: {}", e));
+                return;
             }
             input => {
                 let target_path = resolve_path(&current_dir, input);

@@ -1,0 +1,18 @@
+#V2
+ls
+cd Desktop
+1
+script.sh
+cd
+cargo run
+exit
+ls
+quit
+ls
+cd
+cd ..
+cd .
+cd 
+exit
+cd ..
+quit
