@@ -12,6 +12,8 @@ A cross-platform Rust utility to locate and run Bash scripts with a user-friendl
 - Configuration file for customizing history size and other settings
 - Color-coded directory listings (blue for directories, green for shell scripts)
 - Executes each non-comment, non-empty line of the script in Bash (or WSL on Windows) in the selected folder
+- Script selection by number (just type the number shown next to the script)
+- System-wide script scanning with `scan` command to find all available bash scripts
 
 ---
 
@@ -37,6 +39,17 @@ A cross-platform Rust utility to locate and run Bash scripts with a user-friendl
   ```bash
   /absolute/path     # Navigate to absolute path
   relative/path      # Navigate to relative path
+  ```
+- To scan for bash scripts:
+  ```bash
+  scan              # Show all bash scripts found in the system
+  scan -o           # Same as above but also saves the list to magish_scripts.txt
+  ```
+- To select a script:
+  ```bash
+  1                 # Run the first script from the list
+  2                 # Run the second script from the list
+  # ... and so on
   ```
 - To run a script:
   - Enter the script's path (relative or absolute)
@@ -64,26 +77,6 @@ To build all release artifacts for Linux (`.deb`, `.rpm`) and Windows (`.zip`), 
 ./build.sh
 ```
 Artifacts will be placed in `build/release/`.
-
-### Manual Build (Linux)
-```sh
-cargo build --release
-```
-Binary: `target/release/magish`
-
-### Manual Build (Windows)
-```sh
-cargo build --release --target x86_64-pc-windows-gnu
-```
-Binary: `target/x86_64-pc-windows-gnu/release/magish.exe`
-
-### Installing on Linux
-- `.deb`: `sudo dpkg -i build/release/magish_1.0.0_amd64.deb`
-- `.rpm`: `sudo rpm -i build/release/magish-1.0.0-1.x86_64.rpm`
-
-### Installing on Windows
-- Download the latest `magish-windows-x86_64.zip` from [GitHub Releases](https://github.com/bagault/magish/releases).
-- Run `windows_installer.bat` (it will always fetch and install the latest release).
 
 ---
 
